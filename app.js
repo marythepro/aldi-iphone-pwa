@@ -1,17 +1,224 @@
-let items=[],filter='all',focusIndex=-1;const $=s=>document.querySelector(s),list=$('#list');
-const stateKey='aldi-pwa-items-v1';
-function searchUrl(name){return 'https://www.aldi.us/store/aldi/s?k='+encodeURIComponent(name)}
-function save(){localStorage.setItem(stateKey,JSON.stringify(items))}
-function visible(){const q=$('#search').value.trim().toLowerCase();return items.map((x,i)=>({...x,_i:i})).filter(x=>(!q||x.name.toLowerCase().includes(q))&&(filter==='all'||(filter==='done'?x.checked:!x.checked)))}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){const v=visible(),done=items.filter(x=>x.checked).length,totalQty=items.reduce((a,x)=>a+x.qty,0);$('#summary').textContent=`${items.length} products • ${totalQty} total • ${done} checked`;$('#bar').style.width=(items.length?done/items.length*100:0)+'%';list.innerHTML=v.length?v.map(x=>`<article class="item ${x.checked?'done':''}" data-i="${x._i}"><input class="check" type="checkbox" ${x.checked?'checked':''} aria-label="Check off ${esc(x.name)}"><div><div class="name">${esc(x.name)}</div><div class="meta">Quantity ${x.qty}${x.price!=null?' • $'+Number(x.price).toFixed(2)+' each':''}</div><div class="links"><a target="_blank" rel="noopener" href="${x.direct_url||searchUrl(x.name)}">${x.direct_url?'Open product':'Open ALDI search'}</a></div></div><div class="stepper"><button class="minus" aria-label="Decrease quantity">−</button><div class="qty">${x.qty}</div><button class="plus" aria-label="Increase quantity">+</button></div></article>`).join(''):'<p style="padding:30px;text-align:center">No matching items.</p>'}
-list.onclick=e=>{const a=e.target.closest('.item');if(!a)return;const i=+a.dataset.i;if(e.target.classList.contains('minus'))items[i].qty=Math.max(1,items[i].qty-1);if(e.target.classList.contains('plus'))items[i].qty++;save();render()};
-list.onchange=e=>{if(!e.target.classList.contains('check'))return;const i=+e.target.closest('.item').dataset.i;items[i].checked=e.target.checked;save();render()};
-$('#search').oninput=render;document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;render()});
-function jump(dir){const v=visible();if(!v.length)return;focusIndex=(focusIndex+dir+v.length)%v.length;const el=document.querySelector(`[data-i="${v[focusIndex]._i}"]`);el?.scrollIntoView({behavior:'smooth',block:'center'})}
-$('#next').onclick=()=>jump(1);$('#prev').onclick=()=>jump(-1);
-function textList(){return items.filter(x=>!x.checked).map(x=>`${x.qty} x ${x.name}`).join('\n')||'All items checked off.'}
-async function share(){const text=textList();try{if(navigator.share)await navigator.share({title:'ALDI Shopping List',text});else{await navigator.clipboard.writeText(text);toast('List copied')}}catch(e){}}
-$('#shareTop').onclick=share;$('#copy').onclick=async()=>{await navigator.clipboard.writeText(textList());toast('List copied')};function toast(t){const x=$('#toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
-$('#installHelp').onclick=()=>$('#help').showModal();$('#closeHelp').onclick=()=>$('#help').close();
-(async()=>{const saved=localStorage.getItem(stateKey);items=saved?JSON.parse(saved):await fetch('cart_items.json').then(r=>r.json());render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')})();
+const $ = s => document.querySelector(s);
+const list = $('#list');
+// Keep the original key and array format so existing quantities/checkmarks survive.
+const stateKey = 'aldi-pwa-items-v1';
+const maxQty = 9999;
+let items = [], filter = 'all', focusIndex = -1, toastTimer;
+
+function searchUrl(name) {
+  return 'https://www.aldi.us/store/aldi/s?k=' + encodeURIComponent(name);
+}
+function productUrl(item) {
+  try {
+    const url = new URL(item.direct_url);
+    if (url.protocol === 'https:' || url.protocol === 'http:') return url.href;
+  } catch (_) {}
+  return searchUrl(item.name);
+}
+function esc(value) {
+  return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+}
+function newId() {
+  let id;
+  do {
+    id = 'item-' + (globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2));
+  } while (items.some(item => item.id === id));
+  return id;
+}
+function withIds(source) {
+  const used = new Set();
+  return source.map((item, index) => {
+    let id = typeof item.id === 'string' && /^[a-zA-Z0-9_-]+$/.test(item.id) ? item.id : 'original-' + index;
+    while (used.has(id)) id += '-duplicate';
+    used.add(id);
+    return {...item, id};
+  });
+}
+function commit(next) {
+  try {
+    localStorage.setItem(stateKey, JSON.stringify(next));
+    items = next;
+    render();
+    return true;
+  } catch (_) {
+    toast('Could not save changes on this device. Please free up storage and try again.', 6000);
+    return false;
+  }
+}
+function activeItems() { return items.filter(item => !item.removed); }
+function visible() {
+  const query = $('#search').value.trim().toLowerCase();
+  return activeItems().filter(item => (!query || item.name.toLowerCase().includes(query)) &&
+    (filter === 'all' || (filter === 'done' ? item.checked : !item.checked)));
+}
+function lastRemoved() {
+  return items.filter(item => item.removed).reduce((latest, item) =>
+    !latest || item.removedAt > latest.removedAt ? item : latest, null);
+}
+function setFilter(value) {
+  filter = value;
+  focusIndex = -1;
+  document.querySelectorAll('.chip').forEach(button => {
+    const selected = button.dataset.filter === value;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+}
+function render() {
+  const active = activeItems(), shown = visible();
+  const done = active.filter(item => item.checked).length;
+  const totalQty = active.reduce((sum, item) => sum + Number(item.qty), 0);
+  $('#summary').textContent = `${active.length} products • ${totalQty} total • ${done} checked`;
+  $('#bar').style.width = (active.length ? done / active.length * 100 : 0) + '%';
+  list.innerHTML = shown.length ? shown.map(item => `
+    <article class="item ${item.checked ? 'done' : ''}" data-id="${item.id}">
+      <input class="check" type="checkbox" ${item.checked ? 'checked' : ''} aria-label="Check off ${esc(item.name)}">
+      <div class="item-info"><div class="name">${esc(item.name)}</div>
+        <div class="meta">Quantity ${item.qty}${item.price != null ? ' • $' + Number(item.price).toFixed(2) + ' each' : ''}</div>
+        <div class="links"><a target="_blank" rel="noopener" href="${esc(productUrl(item))}">${item.direct_url ? 'Open product' : 'Open ALDI search'}</a></div>
+      </div>
+      <div class="item-actions"><div class="stepper">
+        <button type="button" class="minus" ${item.qty <= 1 ? 'disabled' : ''} aria-label="Decrease quantity of ${esc(item.name)}">−</button>
+        <div class="qty">${item.qty}</div>
+        <button type="button" class="plus" ${item.qty >= maxQty ? 'disabled' : ''} aria-label="Increase quantity of ${esc(item.name)}">+</button>
+      </div><button type="button" class="remove" aria-label="Remove ${esc(item.name)}">Remove</button></div>
+    </article>`).join('') : '<p class="empty">' + (active.length ? 'No matching items.' : 'Your list is empty. Add an item above.') + '</p>';
+  const removed = lastRemoved();
+  $('#undoBar').hidden = !removed;
+  if (removed) {
+    $('#undoMessage').textContent = `${removed.name} removed.`;
+    $('#undo').setAttribute('aria-label', `Undo removal of ${removed.name}`);
+  }
+}
+function focusControl(id, selector) {
+  list.querySelector(`[data-id="${id}"] ${selector}`)?.focus({preventScroll:true});
+}
+function removeItem(id) {
+  const item = items.find(item => item.id === id && !item.removed);
+  if (!item) return;
+  const shown = visible(), index = shown.findIndex(item => item.id === id);
+  const nextFocus = shown[index + 1] || shown[index - 1];
+  const removedAt = Math.max(Date.now(), ...items.map(item => Number(item.removedAt) || 0)) + 1;
+  if (commit(items.map(item => item.id === id ? {...item, removed:true, removedAt} : item))) {
+    if (nextFocus) focusControl(nextFocus.id, '.remove');
+    else $('#undo').focus({preventScroll:true});
+  }
+}
+function undoRemove() {
+  const removed = lastRemoved();
+  if (!removed) return;
+  if (commit(items.map(item => item.id === removed.id ? {...item, removed:false, removedAt:0} : item))) {
+    // Reveal the restored item even if the user changed search or filter.
+    $('#search').value = '';
+    setFilter('all');
+    render();
+    focusControl(removed.id, '.remove');
+    toast(`${removed.name} restored`);
+  }
+}
+list.onclick = event => {
+  const button = event.target.closest('button');
+  const article = button?.closest('.item');
+  if (!article) return;
+  const id = article.dataset.id;
+  if (button.classList.contains('remove')) return removeItem(id);
+  const delta = button.classList.contains('plus') ? 1 : button.classList.contains('minus') ? -1 : 0;
+  if (!delta) return;
+  if (commit(items.map(item => item.id === id ? {...item, qty:Math.min(maxQty, Math.max(1, Number(item.qty) + delta))} : item))) {
+    focusControl(id, delta > 0 ? '.plus' : '.minus');
+  }
+};
+list.onchange = event => {
+  if (!event.target.classList.contains('check')) return;
+  const id = event.target.closest('.item').dataset.id;
+  const checked = event.target.checked;
+  if (!commit(items.map(item => item.id === id ? {...item, checked} : item))) render();
+  focusControl(id, '.check');
+};
+$('#undo').onclick = undoRemove;
+$('#search').oninput = () => { focusIndex = -1; render(); };
+document.querySelectorAll('.chip').forEach(button => button.onclick = () => { setFilter(button.dataset.filter); render(); });
+
+$('#addForm').onsubmit = event => {
+  event.preventDefault();
+  const nameInput = $('#itemName'), qtyInput = $('#itemQty');
+  const name = nameInput.value.trim().replace(/\s+/g, ' '), qty = Number(qtyInput.value);
+  nameInput.setCustomValidity(name ? '' : 'Enter an item name.');
+  qtyInput.setCustomValidity(Number.isSafeInteger(qty) && qty >= 1 && qty <= maxQty ? '' : 'Enter a whole quantity from 1 to 9999.');
+  if (!$('#addForm').reportValidity()) return;
+  const item = {id:newId(), name, qty, checked:false, price:null, category:'Shopping List', direct_url:'', custom:true};
+  if (commit([item, ...items])) {
+    $('#addForm').reset();
+    $('#search').value = '';
+    setFilter('open');
+    render();
+    nameInput.focus();
+    toast(`${name} added`);
+  }
+};
+$('#itemName').oninput = () => $('#itemName').setCustomValidity('');
+$('#itemQty').oninput = () => $('#itemQty').setCustomValidity('');
+function jump(direction) {
+  const shown = visible();
+  if (!shown.length) return;
+  focusIndex = (focusIndex + direction + shown.length) % shown.length;
+  list.querySelector(`[data-id="${shown[focusIndex].id}"]`)?.scrollIntoView({behavior:'smooth', block:'center'});
+}
+$('#next').onclick = () => jump(1);
+$('#prev').onclick = () => jump(-1);
+function textList() {
+  return activeItems().filter(item => !item.checked).map(item => `${item.qty} x ${item.name}`).join('\n') || (activeItems().length ? 'All items checked off.' : 'Shopping list is empty.');
+}
+async function share() {
+  const text = textList();
+  try {
+    if (navigator.share) await navigator.share({title:'ALDI Shopping List', text});
+    else { await navigator.clipboard.writeText(text); toast('List copied'); }
+  } catch (error) { if (error.name !== 'AbortError') toast('Could not share the list. Please try again.'); }
+}
+$('#shareTop').onclick = share;
+$('#copy').onclick = async () => {
+  try { await navigator.clipboard.writeText(textList()); toast('List copied'); }
+  catch (_) { toast('Could not copy the list. Please use Share.'); }
+};
+function toast(message, duration = 3000) {
+  clearTimeout(toastTimer);
+  $('#toast').textContent = message;
+  $('#toast').style.display = 'block';
+  toastTimer = setTimeout(() => { $('#toast').style.display = 'none'; }, duration);
+}
+$('#installHelp').onclick = () => $('#help').showModal();
+$('#closeHelp').onclick = () => $('#help').close();
+(async () => {
+  try {
+    const saved = localStorage.getItem(stateKey);
+    const source = saved === null ? await fetch('cart_items.json').then(response => {
+      if (!response.ok) throw new Error('List unavailable');
+      return response.json();
+    }) : JSON.parse(saved);
+    if (!Array.isArray(source) || source.some(item => !item || typeof item.name !== 'string' || !Number.isSafeInteger(item.qty) || item.qty < 1)) throw new Error('Invalid saved list');
+    items = withIds(source);
+    // IDs are the only migration; never replace saved items with the source list.
+    if (JSON.stringify(items) !== saved) {
+      try { localStorage.setItem(stateKey, JSON.stringify(items)); }
+      catch (_) { toast('Your list is visible, but this device could not save it.', 6000); }
+    }
+    setFilter('all');
+    render();
+    $('#addFields').disabled = false;
+  } catch (_) {
+    $('#summary').textContent = 'List could not load';
+    list.innerHTML = '<p class="empty">Your saved list has not been changed. Please reconnect and reload to try again.</p>';
+  }
+  if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    const alreadyControlled = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (alreadyControlled && !refreshing) { refreshing = true; location.reload(); }
+    });
+    try {
+      const registration = await navigator.serviceWorker.register('sw.js', {updateViaCache:'none'});
+      registration.update().catch(() => {});
+    } catch (_) {}
+  }
+})();

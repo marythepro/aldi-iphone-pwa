@@ -1,12 +1,18 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0050aa"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="ALDI List">
-<link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><title>ALDI Shopping List</title></head>
+<link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=2"><title>ALDI Shopping List</title></head>
 <body><header><div><h1>ALDI Shopping List</h1><p id="summary">Loading…</p></div><button id="shareTop" class="icon" aria-label="Share list">Share</button></header>
 <main>
-<section class="toolbar"><input id="search" type="search" placeholder="Search 101 products" autocomplete="off"><div class="chips"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="open">To shop</button><button class="chip" data-filter="done">Checked</button></div></section>
+<section class="toolbar"><input id="search" type="search" placeholder="Search items" aria-label="Search items" autocomplete="off"><div class="chips"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="open">To shop</button><button class="chip" data-filter="done">Checked</button></div></section>
+<details class="add-section"><summary>Add item</summary>
+<form id="addForm"><fieldset id="addFields" disabled><div class="add-fields">
+<label class="name-field" for="itemName">Item name<input id="itemName" name="name" type="text" required maxlength="200" placeholder="e.g. Bananas" autocomplete="off"></label>
+<label class="quantity-field" for="itemQty">Quantity<input id="itemQty" name="quantity" type="number" min="1" max="9999" step="1" value="1" required inputmode="numeric"></label>
+<button type="submit" class="add-button">Add to list</button></div></fieldset></form></details>
+<section id="undoBar" class="undo-bar" aria-label="Removed item" hidden><span id="undoMessage" role="status" aria-live="polite"></span><button id="undo" type="button">Undo</button></section>
 <section class="progress"><div id="bar"></div></section><section id="list" aria-live="polite"></section>
 </main>
 <nav><button id="prev">Previous</button><button id="next">Next item</button><button id="copy">Copy list</button></nav>
 <dialog id="help"><h2>Add to iPhone Home Screen</h2><ol><li>Open this site in Safari.</li><li>Tap the Share button.</li><li>Choose <b>Add to Home Screen</b>, then tap <b>Add</b>.</li></ol><button id="closeHelp">Done</button></dialog>
-<button id="installHelp" class="floating">Install</button><div id="toast" role="status"></div><script src="app.js"></script></body></html>
+<button id="installHelp" class="floating">Install</button><div id="toast" role="status"></div><script src="app.js?v=2"></script></body></html>
