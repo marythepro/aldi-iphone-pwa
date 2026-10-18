@@ -1,0 +1,17 @@
+let items=[],filter='all',focusIndex=-1;const $=s=>document.querySelector(s),list=$('#list');
+const stateKey='aldi-pwa-items-v1';
+function searchUrl(name){return 'https://www.aldi.us/store/aldi/s?k='+encodeURIComponent(name)}
+function save(){localStorage.setItem(stateKey,JSON.stringify(items))}
+function visible(){const q=$('#search').value.trim().toLowerCase();return items.map((x,i)=>({...x,_i:i})).filter(x=>(!q||x.name.toLowerCase().includes(q))&&(filter==='all'||(filter==='done'?x.checked:!x.checked)))}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){const v=visible(),done=items.filter(x=>x.checked).length,totalQty=items.reduce((a,x)=>a+x.qty,0);$('#summary').textContent=`${items.length} products • ${totalQty} total • ${done} checked`;$('#bar').style.width=(items.length?done/items.length*100:0)+'%';list.innerHTML=v.length?v.map(x=>`<article class="item ${x.checked?'done':''}" data-i="${x._i}"><input class="check" type="checkbox" ${x.checked?'checked':''} aria-label="Check off ${esc(x.name)}"><div><div class="name">${esc(x.name)}</div><div class="meta">Quantity ${x.qty}${x.price!=null?' • $'+Number(x.price).toFixed(2)+' each':''}</div><div class="links"><a target="_blank" rel="noopener" href="${x.direct_url||searchUrl(x.name)}">${x.direct_url?'Open product':'Open ALDI search'}</a></div></div><div class="stepper"><button class="minus" aria-label="Decrease quantity">−</button><div class="qty">${x.qty}</div><button class="plus" aria-label="Increase quantity">+</button></div></article>`).join(''):'<p style="padding:30px;text-align:center">No matching items.</p>'}
+list.onclick=e=>{const a=e.target.closest('.item');if(!a)return;const i=+a.dataset.i;if(e.target.classList.contains('minus'))items[i].qty=Math.max(1,items[i].qty-1);if(e.target.classList.contains('plus'))items[i].qty++;save();render()};
+list.onchange=e=>{if(!e.target.classList.contains('check'))return;const i=+e.target.closest('.item').dataset.i;items[i].checked=e.target.checked;save();render()};
+$('#search').oninput=render;document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;render()});
+function jump(dir){const v=visible();if(!v.length)return;focusIndex=(focusIndex+dir+v.length)%v.length;const el=document.querySelector(`[data-i="${v[focusIndex]._i}"]`);el?.scrollIntoView({behavior:'smooth',block:'center'})}
+$('#next').onclick=()=>jump(1);$('#prev').onclick=()=>jump(-1);
+function textList(){return items.filter(x=>!x.checked).map(x=>`${x.qty} x ${x.name}`).join('\n')||'All items checked off.'}
+async function share(){const text=textList();try{if(navigator.share)await navigator.share({title:'ALDI Shopping List',text});else{await navigator.clipboard.writeText(text);toast('List copied')}}catch(e){}}
+$('#shareTop').onclick=share;$('#copy').onclick=async()=>{await navigator.clipboard.writeText(textList());toast('List copied')};function toast(t){const x=$('#toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1800)}
+$('#installHelp').onclick=()=>$('#help').showModal();$('#closeHelp').onclick=()=>$('#help').close();
+(async()=>{const saved=localStorage.getItem(stateKey);items=saved?JSON.parse(saved):await fetch('cart_items.json').then(r=>r.json());render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')})();

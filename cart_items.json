@@ -1,0 +1,810 @@
+[
+  {
+    "name": "80/20 ground beef",
+    "qty": 4,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": "https://www.aldi.us/store/aldi/products/17771077-ground-beef-80-20-1-per-lb"
+  },
+  {
+    "name": "Aldi Chocolate Coated Caramel Pie Bites",
+    "qty": 1,
+    "price": 5.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Chocolate Pie Bites",
+    "qty": 1,
+    "price": 5.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Frozen Blackberries",
+    "qty": 2,
+    "price": 6.19,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Frozen Raspberries",
+    "qty": 2,
+    "price": 6.19,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Lemon Mascarpone Dessert Bar - 2 Count",
+    "qty": 1,
+    "price": 3.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Pork Al Pastor Bites",
+    "qty": 2,
+    "price": 5.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Pork Carnitas Bites",
+    "qty": 1,
+    "price": 5.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Strawberry Cream Pie Bites with Chocolaty Coating - 10 Bites",
+    "qty": 1,
+    "price": 0.55,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Aldi Tiramisu Dessert Bar - 2 Count",
+    "qty": 1,
+    "price": 3.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Appleton Farms Premium Sliced Bacon",
+    "qty": 2,
+    "price": 4.35,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Assorted Baklava",
+    "qty": 1,
+    "price": 6.45,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bake House Creations Jumbo Buttermilk Biscuits, 8 count",
+    "qty": 1,
+    "price": 2.05,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bake House Creations Mini Muffins, 10 ct",
+    "qty": 1,
+    "price": 2.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bake Shop Blueberry Mini Muffins",
+    "qty": 1,
+    "price": 3.75,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Baker's Treat Cookie/Maple Mini Muffins, Cookies n C",
+    "qty": 1,
+    "price": 2.75,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Barissimo Caramel Macchiato Iced Coffee",
+    "qty": 1,
+    "price": 3.89,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Benton's Blueberry Breakfast Biscuits - 5 Packs",
+    "qty": 1,
+    "price": 3.59,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Breakfast Best Egg, Canadian Bacon & American Cheese Muffin Sandwiches - 4 Count",
+    "qty": 2,
+    "price": 5.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Breakfast Best Sausage, Egg & Cheese Croissant Sandwiches - 4 Count",
+    "qty": 2,
+    "price": 6.05,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bremer Alfredo Chicken Skillet",
+    "qty": 2,
+    "price": 4.09,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bremer Beef & Broccoli",
+    "qty": 2,
+    "price": 6.95,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bremer Garlic Chicken Skillet",
+    "qty": 2,
+    "price": 4.09,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Chef's Cupboard Chunky Chicken Noodle Soup",
+    "qty": 2,
+    "price": 1.65,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Clancy's Cheese Puffs",
+    "qty": 2,
+    "price": 1.59,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Clancy's White Cheddar Cheese Popcorn",
+    "qty": 2,
+    "price": 1.95,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Crisp Ups Beef Birria & Cheese Crispy Tacos - 8 Pack",
+    "qty": 2,
+    "price": 5.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Crisp Ups Original Shredded Chicken & Cheese Rolled Tacos - 7 Count",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fresh Beef Pot Roast Kit",
+    "qty": 2,
+    "price": 12.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fresh Boneless Center Cut Pork Chops",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fresh Family Pack Boneless Skinless Chicken Thighs",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fresh Pork Boneless Country Style Ribs",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fusia Asian Inspirations Bao Buns, BBQ Pork",
+    "qty": 2,
+    "price": 4.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fusia Asian Inspirations Chicken Fried Rice",
+    "qty": 2,
+    "price": 5.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Fusia Asian Inspirations Firecracker Shrimp",
+    "qty": 2,
+    "price": 6.29,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Happy Farms Cream Cheese",
+    "qty": 5,
+    "price": 1.65,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": "https://www.aldi.us/store/aldi/products/20713385-happy-farms-cream-cheese-8-oz"
+  },
+  {
+    "name": "Happy Farms Mild Cheddar Cheese Snack Sticks",
+    "qty": 3,
+    "price": 2.85,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Happy Farms Shredded Mozzarella Cheese",
+    "qty": 2,
+    "price": 3.65,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Kirkwood Fully Cooked Breaded Chicken Breast Patties",
+    "qty": 2,
+    "price": 5.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Kirkwood Grilled Chicken Breast Strips",
+    "qty": 2,
+    "price": 8.25,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Little Debbie Cosmic Brownies - 6 Count",
+    "qty": 2,
+    "price": 3.55,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Apricot Dill Chicken Salad",
+    "qty": 2,
+    "price": 5.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Bacon & Gruyere Sous-Vide Egg Bites - 4 Count",
+    "qty": 2,
+    "price": 6.59,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli BBQ Pulled Pork",
+    "qty": 2,
+    "price": 6.59,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Mild Cheddar Cheese and Cracker Snack Selects - 3 Count",
+    "qty": 2,
+    "price": 2.75,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Sharp White Cheddar, Cranberries & Almonds Snack Selects - 3 Pack",
+    "qty": 2,
+    "price": 2.75,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Stir Fry Noodles with Mongolian-Style Beef Meal Kit",
+    "qty": 2,
+    "price": 8.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Park Street Deli Teriyaki Udon with Chicken Meal Kit",
+    "qty": 2,
+    "price": 8.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Parkview Polska Kielbasa",
+    "qty": 4,
+    "price": 3.29,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Priano Breaded Chicken Parmesan Patties",
+    "qty": 2,
+    "price": 9.99,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Priano Cheese Tortellini (ready-to-cook, 20 min)",
+    "qty": 2,
+    "price": 3.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "R A N A Grilled White Chicken Fettuccine Alfredo Sauce Meal Kit",
+    "qty": 2,
+    "price": 16.49,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Reggano Spaghetti",
+    "qty": 2,
+    "price": 2.09,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Reggano Traditional Pasta Sauce",
+    "qty": 2,
+    "price": 2.09,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Savoritz Cheese Dip & Cracker Sticks",
+    "qty": 4,
+    "price": 2.15,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Chocolate Fudge Toaster Tarts, 12 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Cinnamon Toaster Tarts, 12 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Strawberry Toaster Tarts, 12 ct",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "L'oven Fresh Plain English Muffins, 6 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Clancy's Pretzel Sticks",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Blueberry Frosted Shredded Wheat Cereal",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Maple and Brown Sugar Instant Oatmeal, 10 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Oyster Crackers",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Kellogg's Spooky Minis Rice Krispies Treats",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Marshmallow and Stars Cereal",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Honey Crunch 'n Oats with Almonds Cereal",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Crispy Rice Cereal",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Benton's Striped Fudge Cookies",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Clancy's Restaurant Style Tortilla Chips",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Savoritz Family Size Extra Toasty Baked Cheese Crackers",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Benton's Original Chocolate Sandwich Crème Cookies",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Apple Cinnamon Fruit and Grain Cereal Bars, 8 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Blueberry Fruit & Grain Cereal Bars, 8 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Benton's Chocolate Chip Cookies",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Simply Nature Organic Apple Cinnamon Instant Oatmeal Packets, 8 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Simply Nature Organic Maple Brown Sugar Instant Oatmeal, 8 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Oats and Honey Granola Crunch",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Millville Complete Buttermilk Pancake & Waffle Mix",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Sundae Shoppe Butter Pecan Ice Cream",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Sundae Shoppe Cookies and Cream Ice Cream",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Mama Cozzi's Pizza Kitchen Pizza Dough",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Chicken Pot Pie or Steak & Potato Soup",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Specially Selected Vanilla Premium Ice Cream",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Sundae Shoppe Ice Cream Bars - 12 count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Season's Choice Hash Brown Patties - 20 Count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Casa Mamita Beef & Bean Burritos - 8 Pack",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bremer Family Size Lasagna with Meat Sauce",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Breakfast Best Double Cinnamon French Toast Sticks",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Bremer Mini Meatballs",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Mama Cozzi's Pizza Kitchen Cheese Stuffed Crust Three Meat Pizza",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Shepherd’s Pie",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Breakfast Best Pancakes & Sausage on a Stick - 10 Count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Mama Cozzi's Pizza Kitchen French Bread Pepperoni Pizza - 2 Pack",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "BREMER Family Size Chicken Pot Pie",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Whole & Simple Garlic Butter Shrimp Rice Bowl",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Whole & Simple Shrimp Bowls 9.6 oz, Shrimp Alfredo",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Rana Lasagna, Chicken Parm",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Specially Selected Butter Garlic Shrimp Scampi",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Chef's Cupboard Chunky Chicken Pot Pie Soup",
+    "qty": 2,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Sundae Shoppe Popsicles, 24 ct",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  },
+  {
+    "name": "Sundae Shoppe Orange Cream Freeze Pops - 6 Count",
+    "qty": 1,
+    "price": null,
+    "category": "Shopping List",
+    "checked": true,
+    "direct_url": ""
+  }
+]
