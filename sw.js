@@ -1,5 +1,5 @@
-const CACHE = 'aldi-list-v2';
-const ASSETS = ['./', './index.html', './styles.css?v=2', './app.js?v=2', './cart_items.json', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'aldi-list-v3';
+const ASSETS = ['./', './index.html', './styles.css?v=3', './app.js?v=2', './cart_items.json', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
