@@ -1,13 +1,12 @@
 {
   "name": "ALDI Shopping List",
   "short_name": "ALDI List",
-  "description": "Offline iPhone shopping list for the consolidated ALDI cart.",
+  "description": "An offline ALDI shopping list for your phone or computer.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f5f7fa",
   "theme_color": "#0050aa",
-  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "icons/icon-192.png",

@@ -1,25 +1,38 @@
-ALDI iPhone PWA
+ALDI Shopping List — Windows and iPhone
 
-Products: 101
-Total quantity: 157
+LIVE APP
+https://marythepro.github.io/aldi-iphone-pwa/
 
-HOSTING REQUIRED
-A service worker cannot run reliably from a local file. Upload this folder to any HTTPS static host.
+Original products: 101
+Original total quantity: 157
+Existing saved lists and original checkmarks are preserved.
 
-iPHONE INSTALL
-1. Open the hosted index.html in Safari.
-2. Tap Share.
-3. Tap Add to Home Screen.
-4. Tap Add.
+WINDOWS
+Open the live app in Chrome or Edge while online.
+Use the browser normally, or choose Install / help for app installation steps.
+The layout adapts to wide desktops, smaller windows and browser zoom.
+
+IPHONE
+Open in Safari, then Safari Share > Add to Home Screen > Add.
 
 FEATURES
-- Offline cache after first successful load
-- Search and All/To shop/Checked filters
-- Quantity steppers
-- Local progress saved on the device
-- Open direct ALDI product link where supplied; otherwise open ALDI search
-- Copy/share list and print support
+- Search and All / To shop / Checked filters
+- Quantity steppers and saved checkmarks
+- Add item with name and quantity
+- Remove and persistent Undo, including after a reload
+- Keyboard access, visible focus, and Previous / Next item navigation
+- Copy / share the unchecked list and print support
+- Original product links or ALDI search
+- Offline use after the first successful online load and cache setup
 
-NOTES
-- This PWA does not automate cart additions or checkout.
-- Clear Safari website data to reset all local progress, or remove localStorage key aldi-pwa-items-v1.
+SAVED DATA
+Data stays in this browser on this device. Phone and computer edits do not sync.
+Chrome and Edge keep separate lists. Use the same browser and profile to return.
+The update preserves localStorage key aldi-pwa-items-v1 and its array format.
+Clearing website data removes the saved list.
+Product links and the first load of an update require an internet connection.
+
+HOSTING
+Serve over HTTPS or localhost; opening the HTML as a local file is not supported.
+See README.md for development, caching and installation details.
+This app does not automate ALDI cart additions or checkout.

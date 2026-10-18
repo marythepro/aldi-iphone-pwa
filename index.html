@@ -1,18 +1,85 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0050aa"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="ALDI List">
-<link rel="apple-touch-icon" href="icons/icon-180.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=3"><title>ALDI Shopping List</title></head>
-<body><header><div><h1>ALDI Shopping List</h1><p id="summary">Loading…</p></div><button id="shareTop" class="icon" aria-label="Share list">Share</button></header>
-<main>
-<section class="toolbar"><input id="search" type="search" placeholder="Search items" aria-label="Search items" autocomplete="off"><div class="chips"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="open">To shop</button><button class="chip" data-filter="done">Checked</button></div></section>
-<details class="add-section"><summary>Add item</summary>
-<form id="addForm"><fieldset id="addFields" disabled><div class="add-fields">
-<label class="name-field" for="itemName">Item name<input id="itemName" name="name" type="text" required maxlength="200" placeholder="e.g. Bananas" autocomplete="off"></label>
-<label class="quantity-field" for="itemQty">Quantity<input id="itemQty" name="quantity" type="number" min="1" max="9999" step="1" value="1" required inputmode="numeric"></label>
-<button type="submit" class="add-button">Add to list</button></div></fieldset></form></details>
-<section id="undoBar" class="undo-bar" aria-label="Removed item" hidden><span id="undoMessage" role="status" aria-live="polite"></span><button id="undo" type="button">Undo</button></section>
-<section class="progress"><div id="bar"></div></section><section id="list" aria-live="polite"></section>
-</main>
-<nav><button id="prev">Previous</button><button id="next">Next item</button><button id="copy">Copy list</button></nav>
-<dialog id="help"><h2>Add to iPhone Home Screen</h2><ol><li>Open this site in Safari.</li><li>Tap the Share button.</li><li>Choose <b>Add to Home Screen</b>, then tap <b>Add</b>.</li></ol><button id="closeHelp">Done</button></dialog>
-<button id="installHelp" class="floating">Install</button><div id="toast" role="status"></div><script src="app.js?v=2"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0050aa">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ALDI List">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <title>ALDI Shopping List</title>
+</head>
+<body>
+  <a class="skip-link" href="#shopping">Skip to shopping list</a>
+  <header>
+    <div><h1>ALDI Shopping List</h1><p id="summary">Loading…</p></div>
+    <button id="shareTop" class="icon" type="button" aria-label="Share list">Share</button>
+  </header>
+  <main>
+    <aside class="controls" aria-label="List tools">
+      <section class="toolbar" aria-label="Search and filter">
+        <label for="search">Find an item</label>
+        <input id="search" type="search" placeholder="Search items" aria-label="Search items" autocomplete="off">
+        <div class="chips" role="group" aria-label="Show items">
+          <button type="button" class="chip active" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="chip" data-filter="open" aria-pressed="false">To shop</button>
+          <button type="button" class="chip" data-filter="done" aria-pressed="false">Checked</button>
+        </div>
+      </section>
+      <details class="add-section">
+        <summary>Add item</summary>
+        <form id="addForm">
+          <fieldset id="addFields" disabled>
+            <div class="add-fields">
+              <label class="name-field" for="itemName">Item name<input id="itemName" name="name" type="text" required maxlength="200" placeholder="e.g. Bananas" autocomplete="off"></label>
+              <label class="quantity-field" for="itemQty">Quantity<input id="itemQty" name="quantity" type="number" min="1" max="9999" step="1" value="1" required inputmode="numeric"></label>
+              <button type="submit" class="add-button">Add to list</button>
+            </div>
+          </fieldset>
+        </form>
+      </details>
+      <div class="device-help">
+        <button id="installHelp" type="button" aria-haspopup="dialog">Install / help</button>
+        <p>Saved in this browser. Phone and computer lists are separate.</p>
+        <p class="keyboard-tip">Keyboard: Tab to move, Space to check, Enter to activate.</p>
+      </div>
+    </aside>
+    <section id="shopping" class="shopping" tabindex="-1" aria-labelledby="listTitle">
+      <div class="list-heading"><h2 id="listTitle">Your shopping list</h2><p id="results" role="status" aria-live="polite"></p></div>
+      <div class="progress" role="progressbar" aria-label="Shopping progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="bar"></div></div>
+      <section id="undoBar" class="undo-bar" aria-label="Removed item" hidden><span id="undoMessage" role="status" aria-live="polite"></span><button id="undo" type="button">Undo</button></section>
+      <div id="list"></div>
+      <noscript><p class="empty">Enable JavaScript to use and save your shopping list.</p></noscript>
+    </section>
+  </main>
+  <nav aria-label="Shopping list actions"><div class="nav-inner">
+    <button id="prev" type="button" disabled>Previous</button>
+    <button id="next" type="button" disabled>Next item</button>
+    <button id="copy" type="button">Copy list</button>
+  </div></nav>
+  <dialog id="help" aria-labelledby="helpTitle">
+    <h2 id="helpTitle" tabindex="-1">Use ALDI List on your devices</h2>
+    <p>Use this page in your browser, or install it for a shortcut and its own app window.</p>
+    <button id="installApp" type="button" hidden>Install ALDI List</button>
+    <h3>HP Windows computer</h3>
+    <p>Connect to the internet and open this page in Microsoft Edge or Google Chrome.</p>
+    <ul>
+      <li><b>Edge:</b> choose the install icon in the address bar, or open the <b>…</b> menu → <b>More tools → Apps → Install this site as an app</b>. In some versions, <b>Apps</b> is directly in the menu.</li>
+      <li><b>Chrome:</b> choose the install icon in the address bar, or <b>⋮ → Cast, save, and share → Install page as app</b>.</li>
+    </ul>
+    <p>Follow the browser’s install prompts. You can then pin ALDI List to your Windows taskbar.</p>
+    <h3>iPhone Home Screen</h3>
+    <ol><li>Open this page in Safari.</li><li>Tap Safari’s Share button.</li><li>Choose <b>Add to Home Screen</b>, then tap <b>Add</b>.</li></ol>
+    <h3>Saved lists and offline use</h3>
+    <p>After the first successful online load, you can use your list offline. Product links need the internet.</p>
+    <p>Your quantities, checkmarks, added items and Undo are saved in this browser on this device. Phone and computer edits do not sync; Chrome and Edge also keep separate lists. Use the same browser to return to your saved list.</p>
+    <p>Use <b>Tab</b> and <b>Shift+Tab</b> to move between controls, <b>Space</b> to check an item, and <b>Enter</b> to use a button. Previous and Next item move focus through the visible items.</p>
+    <button id="closeHelp" type="button">Done</button>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js?v=4"></script>
+</body>
+</html>

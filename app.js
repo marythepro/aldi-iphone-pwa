@@ -5,6 +5,14 @@ const stateKey = 'aldi-pwa-items-v1';
 const maxQty = 9999;
 let items = [], filter = 'all', focusIndex = -1, toastTimer;
 
+// The same controls remain usable when a desktop window is resized or zoomed.
+$('.add-section').open = matchMedia('(min-width: 960px)').matches;
+if ('ResizeObserver' in window) {
+  new ResizeObserver(([entry]) => {
+    document.documentElement.style.setProperty('--header-height', entry.target.offsetHeight + 'px');
+  }).observe($('header'));
+}
+
 function searchUrl(name) {
   return 'https://www.aldi.us/store/aldi/s?k=' + encodeURIComponent(name);
 }
@@ -69,13 +77,18 @@ function render() {
   const done = active.filter(item => item.checked).length;
   const totalQty = active.reduce((sum, item) => sum + Number(item.qty), 0);
   $('#summary').textContent = `${active.length} products • ${totalQty} total • ${done} checked`;
-  $('#bar').style.width = (active.length ? done / active.length * 100 : 0) + '%';
+  const percent = active.length ? done / active.length * 100 : 0;
+  $('#bar').style.width = percent + '%';
+  $('.progress').setAttribute('aria-valuenow', String(Math.round(percent)));
+  $('.progress').setAttribute('aria-valuetext', `${done} of ${active.length} products checked`);
+  $('#results').textContent = `${shown.length} shown · ${active.length - done} to shop`;
+  $('#prev').disabled = $('#next').disabled = !shown.length;
   list.innerHTML = shown.length ? shown.map(item => `
-    <article class="item ${item.checked ? 'done' : ''}" data-id="${item.id}">
+    <article class="item ${item.checked ? 'done' : ''}" data-id="${item.id}" aria-labelledby="name-${item.id}">
       <input class="check" type="checkbox" ${item.checked ? 'checked' : ''} aria-label="Check off ${esc(item.name)}">
-      <div class="item-info"><div class="name">${esc(item.name)}</div>
+      <div class="item-info"><h3 class="name" id="name-${item.id}">${esc(item.name)}</h3>
         <div class="meta">Quantity ${item.qty}${item.price != null ? ' • $' + Number(item.price).toFixed(2) + ' each' : ''}</div>
-        <div class="links"><a target="_blank" rel="noopener" href="${esc(productUrl(item))}">${item.direct_url ? 'Open product' : 'Open ALDI search'}</a></div>
+        <div class="links"><a target="_blank" rel="noopener" href="${esc(productUrl(item))}" aria-label="${item.direct_url ? 'Open product' : 'Open ALDI search'} for ${esc(item.name)} (opens in a new tab)">${item.direct_url ? 'Open product' : 'Open ALDI search'}</a></div>
       </div>
       <div class="item-actions"><div class="stepper">
         <button type="button" class="minus" ${item.qty <= 1 ? 'disabled' : ''} aria-label="Decrease quantity of ${esc(item.name)}">−</button>
@@ -90,8 +103,12 @@ function render() {
     $('#undo').setAttribute('aria-label', `Undo removal of ${removed.name}`);
   }
 }
-function focusControl(id, selector) {
-  list.querySelector(`[data-id="${id}"] ${selector}`)?.focus({preventScroll:true});
+function focusControl(id, selector, preventScroll = true) {
+  const article = list.querySelector(`[data-id="${id}"]`);
+  // A quantity button may become disabled at its limit. Keep a usable focus target.
+  const control = article?.querySelector(`${selector}:not(:disabled)`) || article?.querySelector('.check');
+  control?.focus({preventScroll});
+  return Boolean(control);
 }
 function removeItem(id) {
   const item = items.find(item => item.id === id && !item.removed);
@@ -101,7 +118,8 @@ function removeItem(id) {
   const removedAt = Math.max(Date.now(), ...items.map(item => Number(item.removedAt) || 0)) + 1;
   if (commit(items.map(item => item.id === id ? {...item, removed:true, removedAt} : item))) {
     if (nextFocus) focusControl(nextFocus.id, '.remove');
-    else $('#undo').focus({preventScroll:true});
+    else $('#undo').focus();
+    toast(`${item.name} removed. Use Undo to restore it.`);
   }
 }
 function undoRemove() {
@@ -112,7 +130,7 @@ function undoRemove() {
     $('#search').value = '';
     setFilter('all');
     render();
-    focusControl(removed.id, '.remove');
+    focusControl(removed.id, '.remove', false);
     toast(`${removed.name} restored`);
   }
 }
@@ -126,15 +144,27 @@ list.onclick = event => {
   if (!delta) return;
   if (commit(items.map(item => item.id === id ? {...item, qty:Math.min(maxQty, Math.max(1, Number(item.qty) + delta))} : item))) {
     focusControl(id, delta > 0 ? '.plus' : '.minus');
+    const item = items.find(item => item.id === id);
+    toast(`${item.name}: quantity ${item.qty}`);
   }
 };
 list.onchange = event => {
   if (!event.target.classList.contains('check')) return;
   const id = event.target.closest('.item').dataset.id;
   const checked = event.target.checked;
+  const index = visible().findIndex(item => item.id === id);
   if (!commit(items.map(item => item.id === id ? {...item, checked} : item))) render();
-  focusControl(id, '.check');
+  if (!focusControl(id, '.check')) {
+    // Checking in "To shop" (or unchecking in "Checked") removes this row.
+    const shown = visible(), next = shown[Math.min(index, shown.length - 1)];
+    if (next) focusControl(next.id, '.check', false);
+    else $('#shopping').focus();
+  }
 };
+list.addEventListener('focusin', event => {
+  const article = event.target.closest('.item');
+  if (article) focusIndex = visible().findIndex(item => item.id === article.dataset.id);
+});
 $('#undo').onclick = undoRemove;
 $('#search').oninput = () => { focusIndex = -1; render(); };
 document.querySelectorAll('.chip').forEach(button => button.onclick = () => { setFilter(button.dataset.filter); render(); });
@@ -161,8 +191,12 @@ $('#itemQty').oninput = () => $('#itemQty').setCustomValidity('');
 function jump(direction) {
   const shown = visible();
   if (!shown.length) return;
-  focusIndex = (focusIndex + direction + shown.length) % shown.length;
-  list.querySelector(`[data-id="${shown[focusIndex].id}"]`)?.scrollIntoView({behavior:'smooth', block:'center'});
+  focusIndex = focusIndex < 0 ? (direction > 0 ? 0 : shown.length - 1) :
+    (focusIndex + direction + shown.length) % shown.length;
+  const id = shown[focusIndex].id;
+  focusControl(id, '.check');
+  const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  list.querySelector(`[data-id="${id}"]`)?.scrollIntoView({behavior, block:'center'});
 }
 $('#next').onclick = () => jump(1);
 $('#prev').onclick = () => jump(-1);
@@ -187,7 +221,30 @@ function toast(message, duration = 3000) {
   $('#toast').style.display = 'block';
   toastTimer = setTimeout(() => { $('#toast').style.display = 'none'; }, duration);
 }
-$('#installHelp').onclick = () => $('#help').showModal();
+let installPrompt;
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  installPrompt = event;
+  $('#installApp').hidden = false;
+});
+window.addEventListener('appinstalled', () => {
+  installPrompt = null;
+  $('#installApp').hidden = true;
+  toast('ALDI List installed');
+});
+$('#installApp').onclick = async () => {
+  if (!installPrompt) return;
+  const prompt = installPrompt;
+  installPrompt = null;
+  $('#installApp').hidden = true;
+  try { await prompt.prompt(); }
+  catch (_) { toast('Please use the browser install instructions.'); }
+  $('#helpTitle').focus();
+};
+$('#installHelp').onclick = () => {
+  $('#help').showModal();
+  $('#helpTitle').focus();
+};
 $('#closeHelp').onclick = () => $('#help').close();
 (async () => {
   try {
